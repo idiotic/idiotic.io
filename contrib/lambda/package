@@ -1,4 +1,4 @@
-#!/bin/bsah
+#!/bin/bash
 test -e requests || ./init
 find . -iname '*.pyc' -exec rm {} +
-zip -rc lambda_function.zip lambda_function/ requests
+zip -r lambda_function.zip lambda_function/ requests
