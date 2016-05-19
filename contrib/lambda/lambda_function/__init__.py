@@ -101,7 +101,7 @@ def handleDiscovery(context, event):
         scenes = requests.get(IDIOTIC_SCENES).json()['result']
         payload = {
             "discoveredAppliances": [
-                convertItem(item) for item in items
+                convertItem(item) for item in items if 'alexa.iot_exclude' not in item.get("tags", [])
             ] + [
                 convertScene(scene) for scene in scenes
             ]
