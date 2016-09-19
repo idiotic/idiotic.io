@@ -123,6 +123,8 @@ def handleControl(context, event):
 
         args = [event['payload'][k]["value"] for k in arg_template]
         kwargs = {k: event['payload'][v]['value'] for k, v in kwarg_template.items()}
+
+        requests.get(IDIOTIC_API + "/api/item/" + device_id + "/command/" + cmd, data=kwargs)
  
         header = {
             "namespace":"Alexa.ConnectedHome.Control",
