@@ -30,11 +30,14 @@ COMMAND_MAP = {
 def lambda_handler(event, context):
     access_token = event['payload']['accessToken']
  
-    if event['header']['namespace'] == 'Alexa.ConnectedHome.Discovery':
+    if event['header']['namespace'] in ('Alexa.ConnectedHome.Discovery', 'Discovery'):
         return handleDiscovery(context, event)
  
-    elif event['header']['namespace'] == 'Alexa.ConnectedHome.Control':
+    elif event['header']['namespace'] in ('Alexa.ConnectedHome.Control', 'Control'):
         return handleControl(context, event)
+
+    else:
+        print("Unknown event namespace: " + event['header']['namespace'])
 
 def convertItem(item):
     base = {
@@ -95,7 +98,7 @@ def handleDiscovery(context, event):
         "name": "DiscoverAppliancesResponse",
         "payloadVersion": "2"
         }
- 
+
     if event['header']['name'] == 'DiscoverAppliancesRequest':
         items = requests.get(IDIOTIC_ITEMS).json()['result']
         scenes = requests.get(IDIOTIC_SCENES).json()['result']
