@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}idiotic.io{% endblock %}</title>
+</head>
+<body>
+
+{% with email = session.get('email', None) %}
+{% with name = session.get('name', 'User') %}
+{% if email %}
+Welcome, {{ name }}! | <a href="{{ url_for('logout') }}">Logout</a>
+{% else %}
+<a href="{{ url_for('login') }}">Login</a> | <a href="{{ url_for('register') }}">Register</a>
+{% endif %}
+{% endwith %}
+{% endwith %}
+
+{% block messages %}
+{% with messages = get_flashed_messages(True) %}
+{% if messages %}
+<ul>
+    {% for category, msg in messages %}
+    <li class="m-{{ category }}">{{ msg }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+{% endblock %}
+
+<div id="body">
+    {% block body %}
+    {% endblock %}
+</div>
+</body>
+</html>

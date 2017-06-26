@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block body %}
+<form action="{{ url_for('login') }}" method="POST">
+    <div>
+        <input type="email" name="email" value="{{ email }}" placeholder="Email Address" autofocus="autofocus"/><br/>
+        <input title="Must be at least 8 characters long" pattern=".{8,}" type="password" name="password" placeholder="Password"/><br/>
+        <input type="submit" value="Login"/>
+    </div>
+</form>
+{% endblock %}
