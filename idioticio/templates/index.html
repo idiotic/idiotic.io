@@ -1,4 +1,38 @@
 {% extends 'base.html' %}
 {% block body %}
-<em>#TODO</em>
+
+{% if authed %}
+<h1> Welcome, {{ user_name|d('User')|e }}!</h1>
+<h2> Register with a Service</h2>
+<ul>
+    {% for id, opts in services.items() %}
+    <li><a href="{{ url_for('authorize', service=id) }}">{{ opts.get('desc', id)|e }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<h2>Your Authorized Tokens</h2>
+{% if tokens %}
+<table>
+    <thead>
+    <tr><th>Service</th><th>Token</th><th>Scopes</th><th>Expiration</th></tr>
+    </thead>
+    <tbody>
+    {% for token in tokens %}
+    <tr>
+        <td>{{ token.service|e }}</td>
+        <td>{{ token.value|e }}</td>
+        <td>
+            {{ token.scope_names|join(', ')|e }}
+        </td>
+        <td>
+            {{ token.expiration|string|e }}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+No authorized tokens.
+{% endif %}
 {% endblock %}

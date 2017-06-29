@@ -1,9 +1,23 @@
 from idioticio import run
+from yaml import load, YAMLError
+from sys import argv
 
 
-def main():
-    run(port=80, db="sqlite:///:memory:", config={})
+def main(config):
+    run(config=config)
 
 if __name__ == "__main__":
-    main()
+    config = {}
+    if len(argv) > 1:
+        try:
+            with open(argv[1]) as config_file:
+                config = load(config_file)
+        except YAMLError:
+            print("Unable to load config file: parse error")
+            raise
+        except FileNotFoundError:
+            print("Unable to load config file: file not found")
+        except IOError:
+            print("Unable to load config file: IO error. check file type / permissions?")
 
+    main(config)
