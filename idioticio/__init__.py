@@ -90,17 +90,37 @@ def get_tokens(db):
 def store_oauth_token(db, service, token):
     user_id = session.get('user_id', None)
     if user_id:
-        store_token = Token(
-            service=service['name'],
-            user_id=user_id,
-            value=token['access_token'],
-            type=token.get('token_type', 'bearer'),
-            expiration=datetime.fromtimestamp(token.get('expires_at', 4294967295)),
-            scopes=[Scope(name=n) for n in token.scopes],
-        )
+        expiration = datetime.fromtimestamp(token.get('expires_at', 4294967295))
 
-        db.add(store_token)
-        db.commit()
+        old_token = db.query(Token).filter_by(
+            user_id=user_id,
+            service=service['name']
+        ).first()
+
+        if token.get('scopes'):
+            scopes = [Scope(name=n) for n in token.scopes]
+        else:
+            scopes = []
+
+        if old_token:
+            old_token.expiration = expiration
+            old_token.value = token['access_token']
+            old_token.scopes = scopes
+
+            db.commit()
+
+        else:
+            store_token = Token(
+                service=service['name'],
+                user_id=user_id,
+                value=token['access_token'],
+                type=token.get('token_type', 'bearer'),
+                expiration=expiration,
+                scopes=scopes,
+            )
+
+            db.add(store_token)
+            db.commit()
     else:
         raise ValueError("Not logged in!")
 

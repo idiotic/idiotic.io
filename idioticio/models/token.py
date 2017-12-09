@@ -1,5 +1,8 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
+
+from datetime import datetime
+
 from . import Base
 
 
@@ -20,6 +23,13 @@ class Token(Base):
     @property
     def scope_names(self):
         return (scope.name for scope in self.scopes)
+
+    def to_oauthlib_token(self):
+        return {
+            'access_token': self.value,
+            'token_type': self.type,
+            'expires_at': self.expiration.timestamp(),
+        }
 
 
 class Scope(Base):
