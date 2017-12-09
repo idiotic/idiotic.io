@@ -276,4 +276,4 @@ def run(config):
     Base.metadata.create_all(engine)
 
     APP.secret_key = config['secret_key']
-    APP.run(port=CONFIG['port'], debug=False)
+    APP.run('0.0.0.0', port=CONFIG['port'], debug=False)
