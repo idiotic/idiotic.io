@@ -3,11 +3,9 @@ from yaml import load, YAMLError
 from sys import argv
 
 
-def main(config):
-    run(config=config)
-
-if __name__ == "__main__":
+def main():
     config = {}
+
     if len(argv) > 1:
         try:
             with open(argv[1]) as config_file:
@@ -20,4 +18,7 @@ if __name__ == "__main__":
         except IOError:
             print("Unable to load config file: IO error. check file type / permissions?")
 
-    main(config)
+    run(config=config)
+
+if __name__ == "__main__":
+    main()
