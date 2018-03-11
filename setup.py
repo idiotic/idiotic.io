@@ -1,3 +1,4 @@
+import os
 import sys
 from setuptools import setup, find_packages
 
@@ -5,7 +6,10 @@ def read_license():
     with open("LICENSE") as f:
         return f.read()
 
-data_files = []
+data_files = [
+    ('/share/idiotic.io/templates/', os.listdir('idioticio/templates')),
+    ('/share/idiotic.io/static/', os.listdir('idioticio/static')),
+]
 
 if 'bdist_rpm' in sys.argv:
     data_files.extend([
