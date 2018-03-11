@@ -14,7 +14,30 @@ from datetime import datetime
 
 import os
 
-APP = Flask(__name__)
+# Workaround for setting static and template dirs after instantiation
+# http://flask.pocoo.org/snippets/102/
+class MyFlask(flask.Flask):
+    @property
+    def static_folder(self):
+        if self.config.get('STATIC_FOLDER') is not None:
+            return os.path.join(self.root_path,
+                                self.config.get('STATIC_FOLDER'))
+
+    @static_folder.setter
+    def static_folder(self, value):
+        self.config.get('STATIC_FOLDER') = value
+
+    @property
+    def template_folder(self):
+        if self.config.get('TEMPLATE_FOLDER') is not None:
+            return os.path.join(self.root_path,
+                                self.config.get('TEMPLATE_FOLDER'))
+
+    @template_folder.setter
+    def template_folder(self, value):
+        self.config.get('TEMPLATE_FOLDER') = value
+
+APP = MyFlask(__name__)
 DBSESSION = None
 CONFIG = {
     'database': 'sqlite:///:memory:',
