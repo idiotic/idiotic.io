@@ -277,4 +277,11 @@ def run(config):
     Base.metadata.create_all(engine)
 
     APP.secret_key = config['secret_key']
+
+    if 'static_dir' in config:
+        APP.config['STATIC_FOLDER'] = config['static_dir']
+
+    if 'template_dir' in config:
+        APP.config['TEMPLATE_FOLDER'] = config['template_dir']
+
     APP.run(CONFIG['listen'], port=CONFIG['port'], debug=False)

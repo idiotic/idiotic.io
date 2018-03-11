@@ -7,14 +7,15 @@ def read_license():
         return f.read()
 
 data_files = [
-    ('/share/idiotic.io/templates/', os.listdir('idioticio/templates')),
-    ('/share/idiotic.io/static/', os.listdir('idioticio/static')),
+
 ]
 
 if 'bdist_rpm' in sys.argv:
     data_files.extend([
         ('/etc/idiotic.io/', ['contrib/conf.yaml']),
         ('/usr/lib/systemd/system/', ['contrib/idiotic.service']),
+        ('/usr/share/idiotic.io/templates/', os.listdir('idioticio/templates')),
+        ('/usr/share/idiotic.io/static/', os.listdir('idioticio/static')),
     ])
 
 setup(
