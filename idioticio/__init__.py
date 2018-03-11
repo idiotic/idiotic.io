@@ -19,6 +19,7 @@ DBSESSION = None
 CONFIG = {
     'database': 'sqlite:///:memory:',
     'port': 5000,
+    'listen': '127.0.0.1',
     'secret_key': os.urandom(24),
 }
 
@@ -276,4 +277,4 @@ def run(config):
     Base.metadata.create_all(engine)
 
     APP.secret_key = config['secret_key']
-    APP.run('0.0.0.0', port=CONFIG['port'], debug=False)
+    APP.run(CONFIG['listen'], port=CONFIG['port'], debug=False)
