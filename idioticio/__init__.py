@@ -25,7 +25,7 @@ class MyFlask(flask.Flask):
 
     @static_folder.setter
     def static_folder(self, value):
-        self.config.get('STATIC_FOLDER') = value
+        self.config.update({'STATIC_FOLDER': value})
 
     @property
     def template_folder(self):
@@ -35,7 +35,7 @@ class MyFlask(flask.Flask):
 
     @template_folder.setter
     def template_folder(self, value):
-        self.config.get('TEMPLATE_FOLDER') = value
+        self.config.update({'TEMPLATE_FOLDER': value})
 
 APP = MyFlask(__name__)
 DBSESSION = None
