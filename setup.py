@@ -45,6 +45,8 @@ setup(
         'flask',
         'sqlalchemy',
         'requests_oauthlib',
+        'passlib',
+        'bcrypt',
     ],
     data_files=data_files,
     entry_points={
