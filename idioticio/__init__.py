@@ -16,7 +16,7 @@ import os
 
 # Workaround for setting static and template dirs after instantiation
 # http://flask.pocoo.org/snippets/102/
-class MyFlask(flask.Flask):
+class MyFlask(Flask):
     @property
     def static_folder(self):
         if self.config.get('STATIC_FOLDER') is not None:
