@@ -47,6 +47,7 @@ setup(
         'requests_oauthlib',
         'passlib',
         'bcrypt',
+        'PyYAML',
     ],
     data_files=data_files,
     entry_points={
