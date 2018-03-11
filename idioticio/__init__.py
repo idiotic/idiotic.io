@@ -12,32 +12,12 @@ from requests_oauthlib import OAuth2, OAuth2Session, OAuth1, OAuth1Session
 
 from datetime import datetime
 
+from jinja2 import FileSystemLoader
+
 import os
 
-# Workaround for setting static and template dirs after instantiation
-# http://flask.pocoo.org/snippets/102/
-class MyFlask(Flask):
-    @property
-    def static_folder(self):
-        if self.config.get('STATIC_FOLDER') is not None:
-            return os.path.join(self.root_path,
-                                self.config.get('STATIC_FOLDER'))
 
-    @static_folder.setter
-    def static_folder(self, value):
-        self.config.update({'STATIC_FOLDER': value})
-
-    @property
-    def template_folder(self):
-        if self.config.get('TEMPLATE_FOLDER') is not None:
-            return os.path.join(self.root_path,
-                                self.config.get('TEMPLATE_FOLDER'))
-
-    @template_folder.setter
-    def template_folder(self, value):
-        self.config.update({'TEMPLATE_FOLDER': value})
-
-APP = MyFlask(__name__)
+APP = Flask(__name__)
 DBSESSION = None
 CONFIG = {
     'database': 'sqlite:///:memory:',
@@ -302,9 +282,9 @@ def run(config):
     APP.secret_key = config['secret_key']
 
     if 'static_dir' in config:
-        APP.config['STATIC_FOLDER'] = config['static_dir']
+        APP.static_folder = config['static_dir']
 
     if 'template_dir' in config:
-        APP.config['TEMPLATE_FOLDER'] = config['template_dir']
+        APP.jinja_loader = FileSystemLoader(config['template_dir'])
 
     APP.run(CONFIG['listen'], port=CONFIG['port'], debug=False)
